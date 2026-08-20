@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weave - Kanban Dashboard</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="./CSS/style.css">
+</head>
+<body>
+
+  <!-- TOP NAVBAR -->
+  <header class="navbar">
+    <div class="navbar-left">
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <a href="landing.html" class="logo" style="text-decoration:none;color:inherit;">
+        <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+        </div>
+        <span class="logo-text">Weave</span>
+    </a>
+    </div>
+
+    <div class="navbar-center">
+      <div class="search-bar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="searchInput" placeholder="Search tasks...">
+      </div>
+    </div>
+
+    <!-- NAVBAR RIGHT: Dynamic User State -->
+    <div class="navbar-right">
+      <!-- State A: Logged Out -->
+      <div class="auth-actions" id="navAuthActions">
+        <a href="login.html" class="btn btn-secondary btn-sm">Log in</a>
+        <a href="signup.html" class="btn btn-primary btn-sm">Sign up</a>
+      </div>
+
+      <!-- State B: Logged In -->
+      <div class="user-logged-in-group" id="navUserGroup" style="display: none;">
+        <div class="notif-wrap">
+          <button class="icon-btn nav-btn" id="notifBtn" aria-label="Notifications">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+            <span class="notification-badge" id="notifBadge"></span>
+          </button>
+          <div class="notif-dropdown" id="notifDropdown">
+            <div class="notif-dropdown-header">Notifications</div>
+            <div class="notif-dropdown-list" id="notifDropdownList"></div>
+          </div>
+        </div>
+        <a href="profile.html" class="user-profile" id="userProfileDropdown" style="text-decoration:none;color:inherit;">
+          <div class="avatar" id="navUserAvatar">?</div>
+          <span class="user-name" id="navUserName">Guest</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <a href="#" class="nav-item active" data-target="dashboard">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-item" data-target="dependencies">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M6 9v12"/><path d="M9 6h6a3 3 0 0 1 3 3v6"/></svg>
+              <span>Dependencies</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-item" data-target="activity">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <span>Activity</span>
+            </a>
+          </li>
+          <li>
+            <a href="team.html" class="nav-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Team</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-divider"></div>
+
+        <ul>
+          <li id="sidebarLogoutItem" style="display: none;">
+            <a href="#" class="nav-item text-danger" id="logoutBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span>Logout</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+      
+      <!-- DASHBOARD VIEW -->
+      <section id="view-dashboard" class="content-view active">
+        <div class="dashboard-header">
+          <div>
+            <h1 class="page-title" id="welcomeTitle">Dashboard</h1>
+            <p class="page-subtitle">Manage your tasks and track project progress.</p>
+          </div>
+          <button class="btn btn-primary" id="openCreateModalBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create Task
+          </button>
+        </div>
+
+        <!-- Task Summary Cards -->
+        <div class="summary-cards">
+          <div class="summary-card">
+            <span class="card-label">Total Tasks</span>
+            <span class="card-value" id="statTotal">0</span>
+          </div>
+          <div class="summary-card">
+            <span class="card-label">To Do</span>
+            <span class="card-value" id="statTodo">0</span>
+          </div>
+          <div class="summary-card">
+            <span class="card-label">In Progress</span>
+            <span class="card-value" id="statInProgress">0</span>
+          </div>
+          <div class="summary-card">
+            <span class="card-label">Done</span>
+            <span class="card-value" id="statDone">0</span>
+          </div>
+        </div>
+
+        <!-- Kanban Board -->
+        <div class="kanban-board">
+          <div class="kanban-column" data-status="TODO">
+            <div class="column-header">
+              <div class="column-title-group">
+                <span class="status-indicator status-todo"></span>
+                <h3 class="column-title">TODO</h3>
+              </div>
+              <span class="task-count" id="countTodo">0</span>
+            </div>
+            <div class="task-list" id="colTodo"></div>
+          </div>
+
+          <div class="kanban-column" data-status="IN_PROGRESS">
+            <div class="column-header">
+              <div class="column-title-group">
+                <span class="status-indicator status-in-progress"></span>
+                <h3 class="column-title">IN PROGRESS</h3>
+              </div>
+              <span class="task-count" id="countInProgress">0</span>
+            </div>
+            <div class="task-list" id="colInProgress"></div>
+          </div>
+
+          <div class="kanban-column" data-status="REVIEW">
+            <div class="column-header">
+              <div class="column-title-group">
+                <span class="status-indicator status-review"></span>
+                <h3 class="column-title">REVIEW</h3>
+              </div>
+              <span class="task-count" id="countReview">0</span>
+            </div>
+            <div class="task-list" id="colReview"></div>
+          </div>
+
+          <div class="kanban-column" data-status="DONE">
+            <div class="column-header">
+              <div class="column-title-group">
+                <span class="status-indicator status-done"></span>
+                <h3 class="column-title">DONE</h3>
+              </div>
+              <span class="task-count" id="countDone">0</span>
+            </div>
+            <div class="task-list" id="colDone"></div>
+          </div>
+        </div>
+
+        <!-- Recent Activity Section -->
+        <div class="activity-section">
+          <h2 class="section-title">Recent Activity</h2>
+          <div class="activity-list" id="activityList"></div>
+        </div>
+      </section>
+
+
+      <!-- DEPENDENCIES VIEW -->
+      <section id="view-dependencies" class="content-view">
+        <div class="dashboard-header">
+          <div>
+            <h1 class="page-title">Task Dependencies</h1>
+            <p class="page-subtitle">Visual representation of task prerequisites and locking logic.</p>
+          </div>
+        </div>
+        <div id="dependencyGraphView" style="margin-bottom:24px;padding:20px;background:var(--bg-card, #fff);border-radius:12px;"></div>
+        <div class="dependency-tree-container" id="dependencyTree"></div>
+      </section>
+
+      <!-- ACTIVITY VIEW -->
+      <section id="view-activity" class="content-view">
+        <div class="dashboard-header">
+          <div>
+            <h1 class="page-title">Activity</h1>
+            <p class="page-subtitle">Everything that's happened on this board so far.</p>
+          </div>
+        </div>
+        <div class="activity-section">
+          <div class="activity-list" id="activityListFull"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- CREATE TASK MODAL -->
+  <div class="modal-backdrop" id="createTaskModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="createModalTitle">Create New Task</h2>
+        <button class="modal-close" id="closeCreateModalBtn">&times;</button>
+      </div>
+      <form id="createTaskForm">
+        <div class="modal-body">
+          <div class="form-error" id="taskFormError" style="display:none;"></div>
+          <div class="form-group">
+            <label for="taskTitle" class="form-label">Task Title</label>
+            <input type="text" id="taskTitle" class="form-control" placeholder="e.g. Build Login API" required>
+          </div>
+          <div class="form-group">
+            <label for="taskDesc" class="form-label">Description</label>
+            <textarea id="taskDesc" class="form-control" rows="3" placeholder="Short summary of task objectives..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="taskAssignee" class="form-label">Assigned To</label>
+              <input type="text" id="taskAssignee" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="taskPriority" class="form-label">Priority</label>
+              <select id="taskPriority" class="form-control">
+                <option value="LOW">LOW</option>
+                <option value="MEDIUM" selected>MEDIUM</option>
+                <option value="HIGH">HIGH</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="taskDueDate" class="form-label">Due Date</label>
+              <input type="date" id="taskDueDate" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="taskStatus" class="form-label">Initial Column</label>
+              <select id="taskStatus" class="form-control">
+                <option value="TODO">TODO</option>
+                <option value="IN_PROGRESS">IN PROGRESS</option>
+                <option value="REVIEW">REVIEW</option>
+                <option value="DONE">DONE</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Prerequisite Dependencies</label>
+            <p class="form-help">Task will remain LOCKED until all selected tasks are moved to DONE.</p>
+            <div class="dependency-selector" id="dependencySelector"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelCreateModalBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="taskFormSubmitBtn">Create Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TASK DETAILS MODAL -->
+  <div class="modal-backdrop" id="taskDetailsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Task Details</h2>
+        <button class="modal-close" id="closeDetailsModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="detailsModalBody"></div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" id="deleteTaskBtn">Delete</button>
+        <button class="btn btn-secondary" id="editTaskBtn">Edit</button>
+        <button class="btn btn-secondary" id="closeDetailsModalFooterBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- <script src="./JS/dependencyGraph.js"></script>
+  <script src="./JS/app.js"></script> -->
+
+
+  <script src="./JS/dependencyGraph.js"></script>
+  <script src="./JS/storage.js"></script> 
+  <script src="./JS/taskManager.js"></script>
+  <script src="./JS/dueDateNotifier.js"></script>
+  <script src="./JS/graphView.js"></script>
+  <script src="./JS/app.js"></script>
+</body>
+</html>
