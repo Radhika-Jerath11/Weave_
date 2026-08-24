@@ -352,7 +352,24 @@ body {
 .toast { background-color: var(--olive); color: var(--cream); border-radius: var(--border-radius-md); padding: 14px 18px; box-shadow: var(--shadow-lg); min-width: 300px; max-width: 380px; }
 .toast-title { font-weight: 700; font-size: 0.9rem; }
 .toast-message { font-size: 0.825rem; color: var(--cream-warm); margin-top: 2px; }
-
+.priority-card {
+  background: linear-gradient(135deg, var(--olive) 0%, var(--sage-deep) 100%);
+  color: var(--cream);
+  border-radius: var(--border-radius-lg);
+  padding: 22px 26px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-md);
+}
+.priority-card-eyebrow { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.85; margin-bottom: 10px; }
+.priority-card-body { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+.priority-card-title { font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 10px; }
+.priority-card-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.priority-tag { background: rgba(255,255,255,0.18); padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
+.priority-card-why { font-size: 0.85rem; opacity: 0.92; }
+.priority-why-label { font-weight: 700; display: block; margin-bottom: 4px; }
+.priority-why-list { margin: 0; padding-left: 18px; }
+.priority-card .btn-primary { background: var(--cream); color: var(--olive); flex-shrink: 0; }
+.priority-card .btn-primary:hover { background: var(--cream-warm); }
 @media (max-width: 1200px) { .kanban-board { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 768px) {
   .sidebar {
