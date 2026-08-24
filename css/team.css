@@ -1,0 +1,120 @@
+/* ==========================================================================
+   TaskFlow — Team Page Styles
+   ========================================================================== */
+
+.team-view {
+  --t-cream: var(--cream, #F4EFE1);
+  --t-ink: var(--ink, #2B2A20);
+  --t-ink-soft: var(--ink-soft, #5B5847);
+  --t-olive-700: var(--olive-700, #4E5C36);
+  --t-olive-900: var(--olive-900, #33402A);
+  --t-gold: var(--gold, #C08A3D);
+  --t-line: var(--line, rgba(43,42,32,0.14));
+}
+
+.team-notice {
+  background: rgba(192,138,61,0.08);
+  border: 1px dashed var(--t-gold);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--t-ink-soft);
+  margin: 16px 0 26px;
+}
+
+.team-empty {
+  color: var(--t-ink-soft);
+  text-align: center;
+  padding: 40px 0;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.member-card {
+  background: var(--t-cream);
+  border: 1px solid var(--t-line);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.member-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.member-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--t-olive-700);
+  color: #F6F1E4;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fraunces', serif; font-weight: 700; font-size: 17px;
+  flex: none;
+}
+
+.member-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 15.5px;
+  color: var(--t-ink);
+}
+
+.member-sub {
+  font-size: 12px;
+  color: var(--t-ink-soft);
+  margin-top: 2px;
+}
+
+.member-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.member-stat {
+  text-align: center;
+  background: rgba(43,42,32,0.04);
+  border-radius: 8px;
+  padding: 8px 4px;
+}
+.member-stat-value {
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--t-olive-700);
+}
+.member-stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--t-ink-soft);
+  font-weight: 600;
+}
+
+.member-progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(43,42,32,0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.member-progress-fill {
+  height: 100%;
+  background: var(--t-gold);
+  border-radius: 20px;
+  transition: width 0.5s ease;
+}
+.member-progress-pct {
+  font-size: 11.5px;
+  color: var(--t-ink-soft);
+  text-align: right;
+}
