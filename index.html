@@ -123,6 +123,22 @@
         </div>
 
         <!-- Task Summary Cards -->
+        <!-- WEAVE PRIORITY ENGINE — the one task worth doing right now -->
+        <div class="priority-card" id="priorityCard" style="display:none;">
+          <div class="priority-card-eyebrow">🎯 Your next best task</div>
+          <div class="priority-card-body">
+            <div class="priority-card-main">
+              <h2 class="priority-card-title" id="priorityTaskTitle"></h2>
+              <div class="priority-card-tags" id="priorityTaskTags"></div>
+              <div class="priority-card-why">
+                <span class="priority-why-label">Why this task?</span>
+                <ul class="priority-why-list" id="priorityWhyList"></ul>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="startPriorityTaskBtn">Start Task</button>
+          </div>
+        </div>
+
         <div class="summary-cards">
           <div class="summary-card">
             <span class="card-label">Total Tasks</span>
@@ -313,6 +329,8 @@
   <script src="./JS/storage.js"></script> 
   <script src="./JS/taskManager.js"></script>
   <script src="./JS/dueDateNotifier.js"></script>
+  <script src="./JS/Priorityengine.js"></script>
+  <script src="./JS/Impactpredictor.js"></script>
   <script src="./JS/graphView.js"></script>
   <script src="./JS/app.js"></script>
 </body>
