@@ -298,6 +298,8 @@ body {
 .badge-locked { background-color: var(--danger-light); color: var(--danger-text); }
 .badge-ready { background-color: var(--success-light); color: var(--success-text); }
 .badge-done { background-color: var(--success-light); color: var(--success-text); }
+.badge-inprogress { background-color: var(--primary-light); color: var(--olive); }
+.badge-review { background-color: var(--warning-light); color: var(--warning-text); }
 .badge-priority-HIGH { background-color: var(--danger-light); color: var(--danger-text); }
 .badge-priority-MEDIUM { background-color: var(--warning-light); color: var(--warning-text); }
 .badge-priority-LOW { background-color: var(--primary-light); color: var(--olive); }
@@ -352,6 +354,8 @@ body {
 .toast { background-color: var(--olive); color: var(--cream); border-radius: var(--border-radius-md); padding: 14px 18px; box-shadow: var(--shadow-lg); min-width: 300px; max-width: 380px; }
 .toast-title { font-weight: 700; font-size: 0.9rem; }
 .toast-message { font-size: 0.825rem; color: var(--cream-warm); margin-top: 2px; }
+
+/* PRIORITY ENGINE CARD */
 .priority-card {
   background: linear-gradient(135deg, var(--olive) 0%, var(--sage-deep) 100%);
   color: var(--cream);
@@ -370,6 +374,82 @@ body {
 .priority-why-list { margin: 0; padding-left: 18px; }
 .priority-card .btn-primary { background: var(--cream); color: var(--olive); flex-shrink: 0; }
 .priority-card .btn-primary:hover { background: var(--cream-warm); }
+
+/* IMPACT PREDICTOR — delay simulator inside the task details modal */
+.impact-simulator {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+.impact-simulator-header {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: var(--text-main);
+}
+.impact-simulator-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.impact-simulator-controls .form-control {
+  padding: 8px 10px;
+}
+
+.impact-chain {
+  background-color: var(--cream-warm);
+  border-radius: var(--border-radius-md);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+.impact-chain-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 0.85rem;
+}
+.impact-chain-row:first-child { padding-top: 0; }
+.impact-arrow {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  color: var(--danger);
+  font-size: 0.8rem;
+  min-width: 44px;
+}
+.impact-task-name {
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.impact-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.impact-stat {
+  font-size: 0.85rem;
+  color: var(--text-main);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  padding: 8px 12px;
+}
+.impact-stat-danger {
+  border-color: var(--danger);
+  background-color: var(--danger-light);
+  color: var(--danger-text);
+  font-weight: 600;
+}
+.impact-empty {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background-color: var(--cream-warm);
+  border-radius: var(--border-radius-md);
+  padding: 14px 16px;
+}
+
 @media (max-width: 1200px) { .kanban-board { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 768px) {
   .sidebar {
