@@ -641,21 +641,31 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   }
 
+  function getStatusBadge(task, locked) {
+    if (task.status === 'DONE') return { cls: 'badge-done', label: '✓ DONE' };
+    if (task.status === 'IN_PROGRESS') return { cls: 'badge-inprogress', label: '🚧 IN PROGRESS' };
+    if (task.status === 'REVIEW') return { cls: 'badge-review', label: '👀 IN REVIEW' };
+    // Only a task still sitting in To Do actually needs a locked/ready badge —
+    // once it's moved forward, its dependency state isn't the interesting fact anymore.
+    return locked ? { cls: 'badge-locked', label: '🔒 LOCKED' } : { cls: 'badge-ready', label: '🔓 READY' };
+  }
+
   function openTaskDetailsModal(task) {
     if (!detailsBody) return;
     currentDetailsTaskId = task.id;
     const locked = isTaskLocked(task);
     const isDone = task.status === 'DONE';
     const unmet = getUnmetDependencies(task).map(u => `'${u.title}'`).join(', ');
+    const statusBadge = getStatusBadge(task, locked);
 
     detailsBody.innerHTML = `
       <div style="margin-bottom:12px;">
         <span class="badge badge-priority-${task.priority}">${task.priority} PRIORITY</span>
-        <span class="badge ${locked ? 'badge-locked' : 'badge-ready'}" style="margin-left:8px;">${locked ? '🔒 LOCKED' : '🔓 READY'}</span>
+        <span class="badge ${statusBadge.cls}" style="margin-left:8px;">${statusBadge.label}</span>
       </div>
       <h3 style="font-family:var(--font-serif);font-size:1.3rem;margin-bottom:8px;">${task.title}</h3>
       <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:16px;">${task.description || 'No description provided.'}</p>
-      ${locked ? `<div class="warning-box"><strong>Cannot move to In Progress</strong><br>Complete ${unmet} first.</div>` : ''}
+      ${locked && task.status === 'TODO' ? `<div class="warning-box"><strong>Cannot move to In Progress</strong><br>Complete ${unmet} first.</div>` : ''}
       ${!isDone ? `
         <div class="impact-simulator">
           <div class="impact-simulator-header">🔮 Simulate a delay</div>
