@@ -16,6 +16,15 @@ function showToast(toastEl, textEl, message, type){
   toastEl._hideTimer = setTimeout(() => toastEl.classList.remove('show'), 4500);
 }
 
+function getPasswordIssues(password) {
+  const issues = [];
+  if (password.length < 8) issues.push('at least 8 characters');
+  if (!/[A-Z]/.test(password)) issues.push('one uppercase letter');
+  if (!/[0-9]/.test(password)) issues.push('one number');
+  if (!/[!@#$%^&*(),.?":{}|<>_\-+=~`[\]\\;'/]/.test(password)) issues.push('one special character');
+  return issues;
+}
+
 document.getElementById('goLogin').addEventListener('click', () => {
   crossPageNavigate('login.html');
 });
@@ -51,7 +60,16 @@ const signupLabels = document.querySelectorAll('.node-label');
 function refreshSignupChain(){
   const nameOk = signupName.value.trim().length > 1;
   const emailOk = signupEmail.value.trim().length > 3 && signupEmail.value.includes('@');
-  const passOk = signupPassword.value.length >= 8;
+  const passOk = getPasswordIssues(signupPassword.value).length === 0;
+
+  const issues = getPasswordIssues(signupPassword.value);
+  const hintEl = document.getElementById('passwordHintText');
+  if (issues.length > 0 && signupPassword.value.length > 0) {
+    if (hintEl) hintEl.textContent = 'Needs: ' + issues.join(', ');
+  } else {
+    if (hintEl) hintEl.textContent = '';
+  }
+
   signupName.classList.toggle('resolved', nameOk);
   signupEmail.classList.toggle('resolved', emailOk);
   signupPassword.classList.toggle('resolved', passOk);
@@ -75,6 +93,12 @@ signupForm.addEventListener('submit', (e) => {
 
   const signupToast = document.getElementById('signupToast');
   const signupToastText = document.getElementById('signupToastText');
+
+  const passwordIssues = getPasswordIssues(signupPassword.value);
+  if (passwordIssues.length > 0) {
+    showToast(signupToast, signupToastText, 'Password needs ' + passwordIssues.join(', ') + '.', 'error');
+    return;
+  }
 
   if(findUser(signupEmail.value)){
     showToast(signupToast, signupToastText, 'An account with this email already exists — sign in instead.', 'error');
