@@ -1,3 +1,4 @@
+
 # Weave — Real-Time Kanban with Dependency-Based Task Locking
 
 A Kanban board where tasks can depend on other tasks — a task can't move to
@@ -128,4 +129,10 @@ same logic can be reused unchanged inside an Express controller in Phase 2.
 - Real multi-user accounts with shared, synced boards (Team page currently
   only groups tasks by assignee on a single local board)
 
-  
+<img width="1897" height="875" alt="Screenshot 2026-08-25 111007" src="https://github.com/user-attachments/assets/d7293322-a91c-4233-ae5e-6b6da9839f5d" />
+
+<img width="1896" height="862" alt="Screenshot 2026-08-25 111031" src="https://github.com/user-attachments/assets/6620e9f1-db2a-4b91-831f-3905673d239f" />
+
+<img width="1900" height="870" alt="Screenshot 2026-08-25 115223" src="https://github.com/user-attachments/assets/4072684d-05b6-41bb-a23c-937a83079c7c" />
+
+<img width="725" height="810" alt="Screenshot 2026-08-25 115232" src="https://github.com/user-attachments/assets/064f2348-0648-4264-a696-22fd02507db6" />
