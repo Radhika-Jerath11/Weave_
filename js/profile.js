@@ -103,19 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
       <h2 class="profile-section-title">Recent Activity</h2>
       <div class="profile-activity-list">${renderActivityList()}</div>
     </div>
-
-    <div class="profile-section">
-      <h2 class="profile-section-title">Account</h2>
-      <div class="info-row">
-        <span class="info-label">Password</span>
-        <span class="info-value">••••••••••••</span>
-        <span class="disabled-tag" title="Not available in Phase 1"></span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Session</span>
-        <span class="info-value">Currently signed in</span>
-      </div>
-    </div>
   `;
 
   document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
