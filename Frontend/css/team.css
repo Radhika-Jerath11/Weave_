@@ -1,0 +1,216 @@
+/* ==========================================================================
+   TaskFlow — Team Page Styles
+   ========================================================================== */
+
+.team-view {
+  --t-cream: var(--cream, #F4EFE1);
+  --t-ink: var(--ink, #2B2A20);
+  --t-ink-soft: var(--ink-soft, #5B5847);
+  --t-olive-700: var(--olive-700, #4E5C36);
+  --t-olive-900: var(--olive-900, #33402A);
+  --t-gold: var(--gold, #C08A3D);
+  --t-line: var(--line, rgba(43,42,32,0.14));
+}
+
+.team-notice {
+  background: rgba(192,138,61,0.08);
+  border: 1px dashed var(--t-gold);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--t-ink-soft);
+  margin: 16px 0 26px;
+}
+
+.team-empty {
+  color: var(--t-ink-soft);
+  text-align: center;
+  padding: 40px 0;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.member-card {
+  background: var(--t-cream);
+  border: 1px solid var(--t-line);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.member-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.member-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--t-olive-700);
+  color: #F6F1E4;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fraunces', serif; font-weight: 700; font-size: 17px;
+  flex: none;
+}
+
+.member-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 15.5px;
+  color: var(--t-ink);
+}
+
+.member-sub {
+  font-size: 12px;
+  color: var(--t-ink-soft);
+  margin-top: 2px;
+}
+
+.member-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.member-stat {
+  text-align: center;
+  background: rgba(43,42,32,0.04);
+  border-radius: 8px;
+  padding: 8px 4px;
+}
+.member-stat-value {
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--t-olive-700);
+}
+.member-stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--t-ink-soft);
+  font-weight: 600;
+}
+
+.member-progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(43,42,32,0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.member-progress-fill {
+  height: 100%;
+  background: var(--t-gold);
+  border-radius: 20px;
+  transition: width 0.5s ease;
+}
+.member-progress-pct {
+  font-size: 11.5px;
+  color: var(--t-ink-soft);
+  text-align: right;
+}
+
+/* BOARD MEMBERS ROSTER */
+.board-members-section {
+  background: var(--bg-card, #fff);
+  border: 1px solid var(--t-line);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+.board-members-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.board-members-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--t-ink);
+}
+.members-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.member-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--t-cream);
+  border: 1px solid var(--t-line);
+  border-radius: 30px;
+  padding: 6px 14px 6px 8px;
+}
+.member-pill .avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--t-olive-700);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+.member-pill-info {
+  display: flex;
+  flex-direction: column;
+}
+.member-pill-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--t-ink);
+  line-height: 1.2;
+}
+.member-pill-email {
+  font-size: 11px;
+  color: var(--t-ink-soft);
+}
+.role-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 10px;
+  margin-left: 4px;
+}
+.role-owner {
+  background: rgba(192, 138, 61, 0.15);
+  color: var(--t-gold);
+  border: 1px solid rgba(192, 138, 61, 0.3);
+}
+.role-member {
+  background: rgba(78, 92, 54, 0.12);
+  color: var(--t-olive-700);
+  border: 1px solid rgba(78, 92, 54, 0.25);
+}
+.remove-member-btn {
+  background: none;
+  border: none;
+  color: #a04030;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.remove-member-btn:hover {
+  opacity: 1;
+}

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weave — Accept Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F4EFE1;
+    --card: #FFFDF7;
+    --ink: #2B2A20;
+    --ink-soft: #5C5847;
+    --olive-700: #4E5C36;
+    --olive-800: #3E4B2B;
+    --gold: #C08A3D;
+    --line: rgba(43,42,32,0.12);
+    --green-bg: #EAF0DF;
+    --green-border: #C8D8B6;
+    --green-text: #2F401C;
+    --warn-bg: #F9EBE6;
+    --warn-border: #E8C8BE;
+    --warn-text: #8E3A24;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Ambient decorative background pattern */
+  body::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(192,138,61,0.07) 0%, rgba(78,92,54,0.03) 60%, transparent 100%);
+    top: -150px;
+    right: -100px;
+    pointer-events: none;
+  }
+  body::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(78,92,54,0.08) 0%, rgba(192,138,61,0.02) 60%, transparent 100%);
+    bottom: -150px;
+    left: -100px;
+    pointer-events: none;
+  }
+
+  .invite-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 36px 32px;
+    box-shadow: 0 16px 40px rgba(43,42,32,0.08), 0 2px 6px rgba(43,42,32,0.04);
+    animation: cardAppear 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes cardAppear {
+    from { opacity: 0; transform: translateY(14px) scale(0.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Top Branding */
+  .brand-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--olive-800);
+    text-decoration: none;
+  }
+  .logo-badge {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: var(--olive-700);
+    color: #F4EFE1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tag-pill {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 10px;
+    background: rgba(192,138,61,0.12);
+    color: var(--gold);
+    border-radius: 12px;
+    border: 1px solid rgba(192,138,61,0.25);
+  }
+
+  /* Inviter Badge */
+  .inviter-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px 6px 6px;
+    background: #F1ECE0;
+    border-radius: 24px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+    border: 1px solid rgba(43,42,32,0.08);
+  }
+  .inviter-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--olive-700);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Headings */
+  h1.invite-title {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  p.invite-desc {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+  }
+
+  /* Board Preview Card */
+  .board-preview-box {
+    background: #FAF6ED;
+    border: 1px solid rgba(78,92,54,0.18);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 22px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .board-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #E8EFE0;
+    color: var(--olive-700);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .board-info {
+    flex: 1;
+  }
+  .board-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .board-meta {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+
+  /* Email Pill */
+  .recipient-box {
+    background: rgba(43,42,32,0.04);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .recipient-box strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* Banner Alerts */
+  .alert-banner {
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .alert-banner.warn {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    color: var(--warn-text);
+  }
+  .alert-banner.ok {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    color: var(--green-text);
+  }
+
+  /* Buttons */
+  .action-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .btn-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 24px;
+    background: var(--olive-700);
+    color: #F8F5EE;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 11px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(78,92,54,0.24);
+    transition: all 0.18s ease;
+  }
+  .btn-main:hover {
+    background: var(--olive-800);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(78,92,54,0.3);
+  }
+  .btn-main:disabled {
+    opacity: 0.65;
+    cursor: wait;
+    transform: none;
+  }
+  .btn-sub {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px 20px;
+    background: transparent;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 11px;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .btn-sub:hover {
+    background: rgba(43,42,32,0.04);
+    border-color: rgba(43,42,32,0.22);
+  }
+
+  /* Shimmer Loading State */
+  .loader-state {
+    text-align: center;
+    padding: 30px 0;
+  }
+  .spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(78,92,54,0.18);
+    border-top-color: var(--olive-700);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Success Celebration State */
+  .celebrate-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--green-bg);
+    color: var(--olive-700);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin: 0 auto 16px;
+  }
+</style>
+</head>
+<body>
+
+<div class="invite-card">
+  <div class="brand-bar">
+    <a href="landing.html" class="brand-logo">
+      <span class="logo-badge">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+      </span>
+      Weave
+    </a>
+    <span class="tag-pill">Workspace Invite</span>
+  </div>
+
+  <div id="content">
+    <div class="loader-state">
+      <div class="spinner"></div>
+      <p style="font-size:14.5px;color:var(--ink-soft);">Verifying invitation link…</p>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+const box = document.getElementById('content');
+const INVITE_KEY = 'weaveInviteToken';
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+// Extract token from query params or sessionStorage
+const fromUrl = new URLSearchParams(location.search).get('token');
+const token = fromUrl || sessionStorage.getItem(INVITE_KEY);
+if (fromUrl) {
+  sessionStorage.setItem(INVITE_KEY, fromUrl);
+  history.replaceState(null, '', location.pathname); // Keep token out of address bar
+}
+
+function show(html) { box.innerHTML = html; }
+
+function problem(title, msg) {
+  sessionStorage.removeItem(INVITE_KEY);
+  show(`
+    <div style="text-align:center; padding: 10px 0 6px;">
+      <div style="font-size:36px; margin-bottom:12px;">✉️</div>
+      <h1 class="invite-title" style="font-size:22px;">${esc(title)}</h1>
+      <p class="invite-desc">${esc(msg)}</p>
+      <div class="action-stack" style="margin-top:20px;">
+        <a class="btn-main" href="login.html">Sign In to Weave</a>
+        <a class="btn-sub" href="landing.html">Go to Homepage</a>
+      </div>
+    </div>
+  `);
+}
+
+function goAuth(page, email) {
+  sessionStorage.setItem(INVITE_KEY, token);
+  if (email) sessionStorage.setItem('weaveHandoffEmail', email);
+  location.href = page;
+}
+
+async function init() {
+  if (!token) {
+    return problem(
+      'Invitation Link Required',
+      'Please open the complete link sent to your email (e.g. accept-invite.html?token=...).'
+    );
+  }
+
+  let inv;
+  try {
+    inv = await Weave.invitePreview(token);
+  } catch (err) {
+    return problem(
+      'Invitation Not Available',
+      err.status === undefined
+        ? "Unable to reach the Weave server. Please make sure the backend is running."
+        : err.message
+    );
+  }
+
+  if (inv.state === 'revoked') {
+    return problem('Invitation Cancelled', 'The board owner has cancelled this invitation link.');
+  }
+  if (inv.state === 'expired') {
+    return problem('Invitation Expired', 'This invitation link has expired. Ask the board owner for a new one.');
+  }
+
+  // Already accepted view
+  if (inv.state === 'accepted') {
+    if (!Weave.isLoggedIn()) {
+      show(`
+        <div style="text-align:center;">
+          <div class="celebrate-icon">✓</div>
+          <h1 class="invite-title">Already Accepted</h1>
+          <p class="invite-desc">This invitation to &ldquo;${esc(inv.boardName)}&rdquo; was already accepted. Sign in to open your board.</p>
+          <div class="action-stack">
+            <button class="btn-main" id="goLoginBtn">Sign In to Open Board →</button>
+          </div>
+        </div>
+      `);
+      document.getElementById('goLoginBtn').onclick = () => goAuth('login.html', inv.email);
+      return;
+    }
+    sessionStorage.removeItem(INVITE_KEY);
+    show(`
+      <div style="text-align:center;">
+        <div class="celebrate-icon">✓</div>
+        <h1 class="invite-title">Already a Collaborator</h1>
+        <p class="invite-desc">You are already a member of <b>${esc(inv.boardName)}</b>.</p>
+        <div class="action-stack">
+          <a class="btn-main" href="index.html">Open Board Dashboard →</a>
+        </div>
+      </div>
+    `);
+    return;
+  }
+
+  const initial = (inv.invitedBy ? inv.invitedBy.charAt(0) : 'W').toUpperCase();
+
+  const previewCardHtml = `
+    <div class="inviter-badge">
+      <div class="inviter-avatar">${esc(initial)}</div>
+      <span>Invited by <b>${esc(inv.invitedBy)}</b></span>
+    </div>
+
+    <h1 class="invite-title">Join &ldquo;${esc(inv.boardName)}&rdquo;</h1>
+    <p class="invite-desc">You've been invited to collaborate on this board in real time with dependency tracking.</p>
+
+    <div class="board-preview-box">
+      <div class="board-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+      </div>
+      <div class="board-info">
+        <div class="board-name">${esc(inv.boardName)}</div>
+        <div class="board-meta">Shared Team Board • Real-time Sync</div>
+      </div>
+    </div>
+
+    <div class="recipient-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <span>Invitation sent to: <strong>${esc(inv.email)}</strong></span>
+    </div>
+  `;
+
+  // STATE: Not logged in
+  if (!Weave.isLoggedIn()) {
+    show(`
+      ${previewCardHtml}
+      <div class="action-stack">
+        <button class="btn-main" id="inBtn">Sign In to Join Board →</button>
+        <button class="btn-sub" id="upBtn">Create an Account</button>
+      </div>
+    `);
+    document.getElementById('inBtn').onclick = () => goAuth('login.html', inv.email);
+    document.getElementById('upBtn').onclick = () => goAuth('signup.html', inv.email);
+    return;
+  }
+
+  // STATE: Signed in with different email
+  const me = Weave.user();
+  if (me && me.email.toLowerCase() !== inv.email.toLowerCase()) {
+    show(`
+      ${previewCardHtml}
+      <div class="alert-banner warn">
+        <div>You are currently signed in as <b>${esc(me.email)}</b>, but this invite was issued to <b>${esc(inv.email)}</b>.</div>
+      </div>
+      <div class="action-stack">
+        <button class="btn-main" id="switchBtn">Switch Account to ${esc(inv.email)}</button>
+        <a class="btn-sub" href="index.html">Not Now</a>
+      </div>
+    `);
+    document.getElementById('switchBtn').onclick = () => {
+      Weave.logout();
+      goAuth('login.html', inv.email);
+    };
+    return;
+  }
+
+  // STATE: Logged in and email matches!
+  show(`
+    ${previewCardHtml}
+    <div class="alert-banner ok">
+      <div>✓ Signed in as <b>${esc(me.email)}</b>. Ready to accept!</div>
+    </div>
+    <div class="action-stack">
+      <button class="btn-main" id="acceptBtn">Accept Invitation & Open Board →</button>
+      <a class="btn-sub" href="index.html" id="laterBtn">Not Now</a>
+    </div>
+  `);
+
+  document.getElementById('laterBtn').onclick = () => sessionStorage.removeItem(INVITE_KEY);
+  document.getElementById('acceptBtn').onclick = async (e) => {
+    const btn = e.currentTarget;
+    btn.disabled = true;
+    btn.textContent = 'Joining board…';
+
+    try {
+      const res = await Weave.acceptInvite(token);
+      sessionStorage.removeItem(INVITE_KEY);
+      Weave.setActiveBoard(res.board._id);
+
+      show(`
+        <div style="text-align:center; padding: 12px 0;">
+          <div class="celebrate-icon">🎉</div>
+          <h1 class="invite-title">You're in!</h1>
+          <p class="invite-desc">You are now a collaborator on <b>${esc(res.board.name)}</b>. Launching your board…</p>
+          <div class="spinner" style="margin-top:10px;"></div>
+        </div>
+      `);
+
+      setTimeout(() => {
+        location.href = 'index.html';
+      }, 1200);
+    } catch (err) {
+      problem(
+        'Could Not Accept Invitation',
+        err.status === undefined ? "Server unreachable. Is the backend running?" : err.message
+      );
+    }
+  };
+}
+
+init();
+</script>
+</body>
+</html>

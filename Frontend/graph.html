@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weave — Dependency graph</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#F4EFE1;--panel:#EFE7D5;--ink:#2B2A20;--soft:#5B5847;--olive:#4E5C36;--olive-d:#33402A;--sage:#A6B382;--gold:#C08A3D;--line:rgba(43,42,32,.16)}
+  *{box-sizing:border-box} body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,sans-serif}
+  header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:22px 32px;border-bottom:1px solid var(--line)}
+  h1{font-family:Fraunces,serif;font-size:24px;margin:0} h1 small{font:500 13px Inter;color:var(--soft);margin-left:10px}
+  a{color:var(--olive-d);font-weight:600;font-size:14px}
+  .summary{margin:22px 32px 0;padding:14px 18px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;font-size:14.5px;line-height:1.55}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:14px 32px;font-size:12.5px;color:var(--soft)}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-2px;border:1.5px solid var(--olive)}
+  .canvas{margin:0 32px 40px;overflow:auto;background:#FAF6EA;border:1px solid var(--line);border-radius:14px;padding:12px}
+  .node{cursor:pointer} .node rect{stroke-width:1.5;transition:fill .3s,stroke .3s}
+  .node text{font:600 12.5px Inter;fill:var(--ink);pointer-events:none} .node .sub{font:500 10.5px Inter;fill:var(--soft)}
+  .node:hover rect{filter:drop-shadow(0 3px 5px rgba(43,42,32,.25))}
+  #toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);max-width:520px;padding:12px 18px;border-radius:10px;font-size:14px;color:#F6F1E4;opacity:0;transition:.3s;pointer-events:none}
+  #toast.show{opacity:1;transform:translate(-50%,0)} #toast.err{background:#8A4A34} #toast.ok{background:var(--olive)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Dependency graph <small id="bname"></small></h1>
+  <a href="index.html">&larr; Back to board</a>
+</header>
+<div class="summary" id="summary">Loading…</div>
+<div class="legend">
+  <span><i style="background:#F6F1E4"></i>To do</span><span><i style="background:#D9DDB8"></i>In progress</span><span><i style="background:#E8D9A8"></i>Review</span>
+  <span><i style="background:#A6B382"></i>Done</span><span><i style="background:#E4DFCB;border-style:dashed"></i>Locked</span>
+  <span><i style="border-color:var(--gold);background:#fff"></i>On critical path</span><span>Click a task to advance it. Locked tasks will be refused by the server.</span>
+</div>
+<div class="canvas"><div id="graph"></div></div>
+<div id="toast"></div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="js/api.js"></script>
+<script>
+let boardId = new URLSearchParams(location.search).get('board');
+if (!Weave.isLoggedIn()) location.href = 'login.html';
+
+const W = 190, H = 58, GX = 90, GY = 26, PAD = 24;
+const NEXT = { todo: 'inprogress', inprogress: 'review', review: 'done', done: 'todo' };
+const FILL = { todo: '#F6F1E4', inprogress: '#D9DDB8', review: '#E8D9A8', done: '#A6B382' };
+let tasks = [], cp = { path: [], total: 0 };
+
+function toast(msg, kind) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'show ' + kind;
+  clearTimeout(toast.t); toast.t = setTimeout(() => (t.className = ''), 3200);
+}
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const clip = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
+
+function render() {
+  const byId = new Map(tasks.map((t) => [t._id, t]));
+  const layer = {};
+  const L = (t) => (layer[t._id] ??= t.dependsOn.filter((d) => byId.has(d)).length
+    ? 1 + Math.max(...t.dependsOn.filter((d) => byId.has(d)).map((d) => L(byId.get(d)))) : 0);
+  const cols = [];
+  tasks.forEach((t) => (cols[L(t)] ||= []).push(t));
+
+  const pos = {};
+  cols.forEach((col, c) => col.forEach((t, r) => (pos[t._id] = { x: PAD + c * (W + GX), y: PAD + r * (H + GY) })));
+  const width = PAD * 2 + cols.length * (W + GX) - GX;
+  const height = PAD * 2 + Math.max(1, ...cols.map((c) => c.length)) * (H + GY) - GY;
+
+  const critNodes = new Set(cp.path), critEdges = new Set();
+  cp.path.forEach((id, i) => i && critEdges.add(cp.path[i - 1] + '>' + id));
+
+  let edges = '';
+  tasks.forEach((t) => t.dependsOn.forEach((d) => {
+    if (!pos[d]) return;
+    const a = pos[d], b = pos[t._id], crit = critEdges.has(d + '>' + t._id);
+    const x1 = a.x + W, y1 = a.y + H / 2, x2 = b.x, y2 = b.y + H / 2, mx = (x1 + x2) / 2;
+    edges += `<path d="M${x1} ${y1} C${mx} ${y1} ${mx} ${y2} ${x2 - 6} ${y2}" fill="none" stroke="${crit ? '#C08A3D' : '#8B8670'}" stroke-width="${crit ? 3 : 1.5}" ${crit ? '' : 'stroke-dasharray="5 4"'} marker-end="url(#${crit ? 'ac' : 'an'})"/>`;
+  }));
+
+  const nodes = tasks.map((t) => {
+    const p = pos[t._id], crit = critNodes.has(t._id);
+    const sub = t.locked ? '🔒 waiting on ' + clip(t.blockedBy.map((b) => b.title).join(', '), 18)
+      : t.status === 'done' ? '✓ done' : (t.status === 'inprogress' ? 'in progress' : t.status === 'review' ? 'in review' : 'ready') + ' · ' + t.estimate + 'u';
+    return `<g class="node" data-id="${t._id}" transform="translate(${p.x},${p.y})">
+      <rect width="${W}" height="${H}" rx="10" fill="${t.locked ? '#E4DFCB' : FILL[t.status]}" stroke="${crit ? '#C08A3D' : '#4E5C36'}"
+        stroke-width="${crit ? 3 : 1.5}" ${t.locked ? 'stroke-dasharray="5 3"' : ''}/>
+      <text x="14" y="24">${esc(clip(t.title, 24))}</text><text class="sub" x="14" y="42">${esc(sub)}</text></g>`;
+  }).join('');
+
+  document.getElementById('graph').innerHTML = `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+    <defs>
+      <marker id="an" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8B8670"/></marker>
+      <marker id="ac" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#C08A3D"/></marker>
+    </defs>${edges}${nodes}</svg>`;
+
+  const names = cp.path.map((id) => byId.get(id)?.title).filter(Boolean);
+  document.getElementById('summary').innerHTML = names.length
+    ? `<b>Critical path:</b> ${names.map(esc).join(' → ')}<br><b>${cp.total}</b> effort units of work remain on the longest chain. Delaying any task on it delays the finish.`
+    : 'Nothing left on the critical path. Every task is done.';
+}
+
+async function load() {
+  const [b, c] = await Promise.all([Weave.getBoard(boardId), Weave.criticalPath(boardId)]);
+  document.getElementById('bname').textContent = b.board.name;
+  tasks = b.tasks; cp = c; render();
+}
+
+document.getElementById('graph').addEventListener('click', async (e) => {
+  const g = e.target.closest('.node'); if (!g) return;
+  const t = tasks.find((x) => x._id === g.dataset.id);
+  try { await Weave.moveTask(t._id, NEXT[t.status]); }       // the socket update re-renders the graph
+  catch (err) { toast(err.message, 'err'); }
+});
+
+async function start() {
+  if (!Weave.isLoggedIn()) return;
+  if (!boardId) {                                    // no ?board= in the address: use your first board
+    const boards = await Weave.listBoards();
+    if (!boards.length) { document.getElementById('summary').textContent = 'No board yet. Open the dashboard first.'; return; }
+    boardId = Weave.pickBoard(boards)._id;
+  }
+  await load();
+  Weave.subscribe(boardId, async ({ tasks: fresh, event }) => {
+    tasks = fresh; render();
+    cp = await Weave.criticalPath(boardId); render();
+    const names = (event.unlocked || []).map((id) => fresh.find((t) => t._id === id)?.title).filter(Boolean);
+    if (names.length) toast('Unlocked: ' + names.join(', '), 'ok');
+  });
+}
+start().catch((e) => toast(e.status === undefined ? "Can't reach the server. Is the backend running?" : e.message, 'err'));
+</script>
+</body>
+</html>
