@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Weave frontend static application",
   "scripts": {
+    "build": "echo 'Static build ready'",
     "start": "npx -y serve -l 5500",
     "dev": "npx -y serve -l 5500"
   }
