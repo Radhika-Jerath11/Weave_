@@ -1,10 +1,15 @@
+
 {
   "version": 2,
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/", "destination": "/Frontend/landing.html" },
-    { "source": "/css/(.*)", "destination": "/Frontend/css/$1" },
-    { "source": "/js/(.*)", "destination": "/Frontend/js/$1" },
-    { "source": "/((?!Frontend/).*)", "destination": "/Frontend/$1" }
+    {
+      "source": "/",
+      "destination": "/Frontend/landing.html"
+    },
+    {
+      "source": "/((?!Frontend/).*)",
+      "destination": "/Frontend/$1"
+    }
   ]
 }
