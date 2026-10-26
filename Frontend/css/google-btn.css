@@ -1,0 +1,24 @@
+/* "Continue with Google" button — uses the same colours as the rest of Weave */
+.divider-or{
+  display:flex; align-items:center; gap:10px; margin-top:18px;
+  font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:.08em;
+  text-transform:uppercase; color: var(--olive-mid);
+}
+.divider-or::before, .divider-or::after{ content:''; flex:1; height:1px; background: var(--sage-line); }
+
+button.google-btn{
+  width:100%; margin-top:14px; padding:11px 12px;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  font-family:'Work Sans', sans-serif; font-weight:600; font-size:14.5px; letter-spacing:.01em;
+  color: var(--olive-deep); background: var(--cream);
+  border:1.5px solid var(--sage-line); border-radius:7px; cursor:pointer;
+  transition: border-color .25s ease, background .25s ease, transform .15s ease, box-shadow .25s ease;
+}
+button.google-btn svg{ flex:none; }
+button.google-btn:hover{
+  border-color: var(--olive-mid); background:#FAF6EA;
+  transform:translateY(-1px); box-shadow: 0 8px 18px -10px rgba(75,78,48,0.45);
+}
+button.google-btn:active{ transform:translateY(0); box-shadow:none; }
+button.google-btn:focus-visible{ outline:none; border-color: var(--olive-mid); box-shadow: 0 0 0 3px rgba(140,152,102,0.28); }
+button.google-btn:disabled{ opacity:.65; cursor:wait; transform:none; box-shadow:none; }    
