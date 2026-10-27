@@ -23,7 +23,14 @@ const GOOGLE_CLIENT_ID = '823744007661-uh1en1q0s4d4kcphkjt7507atqneuacu.apps.goo
   async function finish(accessToken) {
     let data;
     try {
-      const res = await fetch('http://localhost:5000/api/auth/google', {
+      // Dynamically resolve the backend URL for production vs localhost
+      const ORIGIN = window.WEAVE_API_URL || localStorage.getItem('weave_api_origin') || (
+        ['localhost', '127.0.0.1'].includes(window.location.hostname)
+          ? 'http://localhost:5000'
+          : 'https://weave-p5zh.onrender.com'
+      );
+      
+      const res = await fetch(`${ORIGIN}/api/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ accessToken })
@@ -35,6 +42,8 @@ const GOOGLE_CLIENT_ID = '823744007661-uh1en1q0s4d4kcphkjt7507atqneuacu.apps.goo
       reset();
       return;
     }
+    // ... rest of your success handling code
+}
     // Same things Weave.login() saves, so every other page sees you as signed in
     localStorage.setItem('weave_token', data.token);
     localStorage.setItem('weave_user', JSON.stringify(data.user));
