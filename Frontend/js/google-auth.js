@@ -24,17 +24,10 @@ const GOOGLE_CLIENT_ID = '823744007661-uh1en1q0s4d4kcphkjt7507atqneuacu.apps.goo
     label.textContent = 'Continue with Google';
   }
 
-  async function finish(accessToken) {
+   async function finish(accessToken) {
     let data;
     try {
-      // Dynamically resolve the backend URL for production vs localhost
-      const ORIGIN = window.WEAVE_API_URL || localStorage.getItem('weave_api_origin') || (
-        ['localhost', '127.0.0.1'].includes(window.location.hostname)
-          ? 'http://localhost:5000'
-          : 'https://weave-p5zh.onrender.com'
-      );
-      
-      const res = await fetch(`${ORIGIN}/api/auth/google`, {
+      const res = await fetch('https://weave-p5zh.onrender.com/api/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ accessToken })
