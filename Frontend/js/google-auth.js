@@ -18,7 +18,11 @@ const GOOGLE_CLIENT_ID = '823744007661-uh1en1q0s4d4kcphkjt7507atqneuacu.apps.goo
     clearTimeout(toast._hideTimer);
     toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 4500);
   }
-  function reset() { btn.disabled = false; label.textContent = 'Continue with Google'; }
+
+  function reset() {
+    btn.disabled = false;
+    label.textContent = 'Continue with Google';
+  }
 
   async function finish(accessToken) {
     let data;
@@ -42,8 +46,7 @@ const GOOGLE_CLIENT_ID = '823744007661-uh1en1q0s4d4kcphkjt7507atqneuacu.apps.goo
       reset();
       return;
     }
-    // ... rest of your success handling code
-}
+
     // Same things Weave.login() saves, so every other page sees you as signed in
     localStorage.setItem('weave_token', data.token);
     localStorage.setItem('weave_user', JSON.stringify(data.user));
@@ -67,7 +70,11 @@ const GOOGLE_CLIENT_ID = '823744007661-uh1en1q0s4d4kcphkjt7507atqneuacu.apps.goo
       client_id: GOOGLE_CLIENT_ID,
       scope: 'openid email profile',
       callback: (resp) => {
-        if (resp.error || !resp.access_token) { say('Google sign-in was cancelled.'); reset(); return; }
+        if (resp.error || !resp.access_token) {
+          say('Google sign-in was cancelled.');
+          reset();
+          return;
+        }
         label.textContent = 'Signing you in…';
         finish(resp.access_token);
       },
