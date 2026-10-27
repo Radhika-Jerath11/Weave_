@@ -2,10 +2,10 @@
    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
    <script src="js/api.js"></script>                                      */
 (function () {
-  const ORIGIN = window.WEAVE_API_URL || localStorage.getItem('weave_api_origin') || (
+ const ORIGIN = window.WEAVE_API_URL || localStorage.getItem('weave_api_origin') || (
     ['localhost', '127.0.0.1'].includes(window.location.hostname)
       ? 'http://localhost:5000'
-      : window.location.origin
+      : 'https://weave-p5zh.onrender.com'
   );
   const API = ORIGIN + '/api';
   const TOKEN = 'weave_token', USER = 'weave_user', BOARD = 'weave_board';
