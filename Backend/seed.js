@@ -1,4 +1,8 @@
-// npm run seed  ->  demo user + a board with a dependency chain
+/**
+ * Database seeding script that populates MongoDB with a pre-configured 
+ * demo user account and a full task dependency chain board 
+ * ("Launch plan") for testing and development purposes.
+ */
 require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
