@@ -1,3 +1,9 @@
+/**
+ * Main application entry point for the Weave backend API. Initializes Express, 
+ * configures CORS and middleware pipelines, connects to MongoDB Atlas via Mongoose, sets up 
+ * Socket.io for real-time collaboration rooms, and handles global error management.
+ */
+
 require('dotenv').config();
 const http = require('http');
 const express = require('express');
