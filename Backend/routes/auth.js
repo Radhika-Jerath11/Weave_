@@ -1,8 +1,8 @@
 // const router = require('express').Router();
 // const auth = require('../middleware/auth');
 // const authController = require('../controllers/authController');
-// const { wrap } = require('../utils/helpers');
-
+// // const { wrap } = require('../utils/helpers');
+// const auth = require('../middleware/auth');
 // router.post('/signup', wrap(authController.signup));
 // router.post('/login', wrap(authController.login));
 // router.get('/me', auth, wrap(authController.getMe));
