@@ -1,3 +1,9 @@
+/**
+ * Authentication middleware that extracts and verifies JSON Web Tokens (JWT) 
+ * from Authorization headers, handles token expiration vs invalid signatures, and populates 
+ * req.userId for protected routes.
+ */
+
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
