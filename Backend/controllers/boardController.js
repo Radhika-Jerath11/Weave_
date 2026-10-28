@@ -1,3 +1,9 @@
+/**
+ *  Controller handling board management, task creation, member collaboration, 
+ * and secure team invitations. Manages board CRUD operations, dependency validation, 
+ * critical path calculations, invitation tokens via email, and real-time socket events.
+ */
+
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const Board = require('../models/Board');
