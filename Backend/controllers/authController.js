@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { HttpError } = require('../utils/helpers');
-
+// Generates an authentication payload containing a signed JWT and sanitized user data.
 const session = (u) => ({
   token: jwt.sign({ id: u._id }, process.env.JWT_SECRET, { expiresIn: '7d' }),
   user: { id: u._id, name: u.name, email: u.email }
@@ -16,9 +16,11 @@ exports.signup = async (req, res) => {
   if (password.length < 6) throw new HttpError(400, 'Password must be at least 6 characters');
   if (await User.exists({ email })) throw new HttpError(409, 'An account with this email already exists');
   const user = await User.create({ name, email, password: await bcrypt.hash(password, 10) });
+  // Return token and profile with a 201 Created status
   res.status(201).json(session(user));
 };
 
+// Verifies email and password, returning an active session upon success.
 exports.login = async (req, res) => {
   const email = String(req.body.email || '').trim().toLowerCase();
   const user = await User.findOne({ email });
