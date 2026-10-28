@@ -1,3 +1,8 @@
+/**
+ * Controller managing task lifecycle operations, status transitions, 
+ * dependency rules enforcement, cascading locks/unlocks, and real-time Socket.io broadcasting.
+ */
+
 const Task = require('../models/Task');
 const { HttpError, loadTask, persistStatuses, logActivity, cleanFields, publish } = require('../utils/helpers');
 const engine = require('../utils/engine');
