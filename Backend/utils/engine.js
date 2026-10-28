@@ -111,7 +111,6 @@ function setDependencies(tasks, taskId, deps) {
   }
   task.dependsOn = wanted;
   const changes = [];
-  // A started task that just gained an unfinished prerequisite goes back to todo.
   if (task.status !== 'todo' && blockers(task, map).length) {
     task.status = 'todo';
     changes.push({ id: task._id, status: 'todo' });
@@ -164,7 +163,7 @@ function criticalPath(tasks) {
   return { path: path.filter((id) => map.get(id).status !== 'done'), total: dist.get(end) };
 }
 
-// Shape sent to the frontend: ids as strings + derived lock state.
+// Shape sent to the frontend: ids as Strings + derived lock state.
 function withLockState(tasks) {
   const map = buildMap(tasks);
   return [...map.values()].map((t) => {
