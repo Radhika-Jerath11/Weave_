@@ -1,3 +1,7 @@
+/**Comprehensive unit test suite for the Weave task dependency engine.
+* Tests strict dependency validation, status transition rules (todo, inprogress, review, done),
+ * recursive cascade resetting, circular dependency detection, and critical path analysis.
+ */
 const assert = require('assert');
 const E = require('../utils/engine');
 
