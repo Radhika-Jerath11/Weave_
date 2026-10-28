@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 // The emailed link carries a random token. Only its SHA-256 hash is stored,
-// so a database leak can't be used to accept invitations.
 module.exports = mongoose.model('Invite', new mongoose.Schema({
   board: { type: mongoose.Schema.Types.ObjectId, ref: 'Board', required: true, index: true },
   email: { type: String, required: true, lowercase: true, trim: true },
